@@ -5,7 +5,7 @@ Shared UI for vmem, vibot and Verve web. One token file, one primitive library (
 | Package | What it is |
 | --- | --- |
 | `@vv/tokens` | One CSS entry for Tailwind v4 apps: colour, radius, shadow, easing and font tokens, light and dark themes, and body defaults. |
-| `@vv/ui` | Shared React 19 primitives from vmem's `packages/ui` (Radix, CVA, Tailwind v4 classes). Source-exported. Colour, radius, shadow and font come from `@vv/tokens`, not a second token file. |
+| `@vv/ui` | Shared React 19 primitives. vmem `packages/ui` is the baseline; leftover vibot and Verve files are included so the apps can share and unify them later. Source-exported. Colour, radius, shadow and font come from `@vv/tokens`, not a second token file. |
 | `@vv/shell` | React 19 components with no router dependency: `SidebarHeader` and `PillTabs`. Only copy; they are not also in `@vv/ui`. |
 
 All three packages are private. Do not publish them to npm.
@@ -33,7 +33,7 @@ The private GitHub repo is [vvedantb/vv-ui](https://github.com/vvedantb/vv-ui). 
 
 `@vv/tokens` and `@vv/ui` are source and need no compile step. `@vv/shell`'s `dist` folder is not committed, so build that package after install (`pnpm build` in this repo) before Tailwind scans it.
 
-`@vv/ui` expects the same peer stack as vmem's library (React 19, Radix, CVA, cmdk, motion, sonner, clsx, tailwind-merge, Tabler icons). Install those in the app. Also install `@vv/tokens` and import it; `@vv/ui` does not copy tokens.
+`@vv/ui` expects the vmem peer stack (React 19, Radix, CVA, cmdk, motion, sonner, clsx, tailwind-merge, Tabler icons) plus the leftover extras' peers (`radix-ui`, accordion/scroll-area/visually-hidden, vaul, embla, shiki, `ai`, streamdown, nanoid, use-stick-to-bottom). Install those in the app. Also install `@vv/tokens` and import it; `@vv/ui` does not copy tokens.
 
 ## Use in a Tailwind v4 app
 
@@ -72,19 +72,22 @@ import { SidebarHeader, PillTabs } from "@vv/shell";
 
 ## What moved into `@vv/ui`
 
-Taken from vmem `packages/ui` (not a blend with vibot or Verve). Implementations in the other two apps differ; this package is vmem's source.
+**vmem baseline (plain names, not blended):** `_menu-classes`, `badge`, `breadcrumb`, `button`, `card`, `checkbox`, `collapsible`, `command`, `context-menu`, `dialog`, `dropdown-menu`, `hover-card`, `input`, `label`, `labeled-switch-row`, `modalTransition`, `popover`, `progress`, `select`, `separator`, `skeleton`, `sonner`, `sonner.css`, `spinner`, `switch`, `table`, `tabs`, `tabsSliding`, `textarea`, `time-picker`, `tooltip`, plus `cn` and motion presets.
 
-`_menu-classes`, `badge`, `breadcrumb`, `button`, `card`, `checkbox`, `collapsible`, `command`, `context-menu`, `dialog`, `dropdown-menu`, `hover-card`, `input`, `label`, `labeled-switch-row`, `modalTransition`, `popover`, `progress`, `select`, `separator`, `skeleton`, `sonner`, `sonner.css`, `spinner`, `switch`, `table`, `tabs`, `tabsSliding`, `textarea`, `time-picker`, `tooltip`, plus `cn` and motion presets.
+**Leftovers from vibot and Verve (now shared here):** `accordion`, `clear-input`, `input-group`, `scroll-area`, `button-group`, `carousel`, `pagination`, `radix-select`, `search-input`, `surface-classes`, the whole `ai-elements` directory, `clearInputDissolve`, `kbd`, `sheet`, `visually-hidden`. Vibot's extra motion presets and `_menu-classes` sit beside the vmem files as `presets.vibot.ts` and `_menu-classes.vibot.ts`.
+
+### Drift (both apps had a copy)
+
+- `accordion`: vibot's file is the default (`accordion.tsx`); it uses the unified `radix-ui` package, a local chevron, and `data-slot` plus height animation. Verve's copy stays as `accordion.verve.tsx` (`@radix-ui/react-accordion`, Tabler chevron, `forwardRef`).
+- `clear-input`: Verve's file is the default; it runs the dissolve animation via `clearInputDissolve`. Vibot's simpler clear button stays as `clear-input.vibot.tsx`.
+- `input-group`: vibot's file is the default (`data-slot` variants, more addon/button sizes). Verve's `error` prop and `forwardRef` copy stays as `input-group.verve.tsx`.
+- `scroll-area`: vibot's file is the default (`radix-ui`, `data-slot`, hover thumb). Verve's `@radix-ui/react-scroll-area` `forwardRef` copy stays as `scroll-area.verve.tsx`.
+
+`radix-select` is exported as `RadixSelect*` so it does not clash with vmem `select`.
 
 ## What stays app-local
 
-**Not in vmem, so not in `@vv/ui`:**
-
-- vibot and Verve: `accordion`, `clear-input`, `input-group`, `scroll-area`
-- vibot only: `button-group`, `carousel`, `pagination`, `radix-select`, `search-input`, `surface-classes`, and `src/ai-elements`
-- Verve only: `clearInputDissolve`, `kbd`, `sheet`, `visually-hidden`
-
-**Also stays in each app:** navigation layout (icon rails, sidebars, sidebar and header size variables), page layouts, segmented controls, modal and tab CSS classes (including `--modal-close-dur` and similar), `glass-panel-*` / `smooth-shadow-ring-*` / `hit-target` utilities, marketing fonts, animations and editor styles.
+Navigation layout (icon rails, sidebars, sidebar and header size variables), page layouts, segmented controls, modal and tab CSS classes (including `--modal-close-dur` and similar), `glass-panel-*` / `smooth-shadow-ring-*` / `hit-target` utilities, marketing fonts, animations and editor styles.
 
 ## Develop
 
