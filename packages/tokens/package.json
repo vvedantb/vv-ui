@@ -1,0 +1,16 @@
+{
+  "name": "@vv/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "exports": {
+    ".": "./src/tokens.css",
+    "./tokens.css": "./src/tokens.css"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "node -e \"require('node:fs').accessSync('src/tokens.css')\""
+  }
+}
