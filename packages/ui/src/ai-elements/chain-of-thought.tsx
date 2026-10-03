@@ -1,0 +1,212 @@
+"use client";
+import type { TablerIcon } from "@tabler/icons-react";
+import type { ComponentProps, ReactNode } from "react";
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import {
+  IconBrain,
+  IconChevronDown,
+  IconPointFilled,
+} from "@tabler/icons-react";
+import { Badge } from "../ui/badge";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/collapsible";
+import { cn } from "../utils/cn";
+import { flatPanelSubtleClass } from "../ui/surface-classes";
+import { createContext, useContext } from "react";
+interface ChainOfThoughtContextValue {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+}
+const ChainOfThoughtContext = createContext<ChainOfThoughtContextValue | null>(
+  null,
+);
+const useChainOfThought = () => {
+  const context = useContext(ChainOfThoughtContext);
+  if (!context) {
+    throw new Error(
+      "ChainOfThought components must be used within ChainOfThought",
+    );
+  }
+  return context;
+};
+export type ChainOfThoughtProps = ComponentProps<"div"> & {
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+export function ChainOfThought({
+  className,
+  open,
+  defaultOpen = false,
+  onOpenChange,
+  children,
+  ...props
+}: ChainOfThoughtProps) {
+  const [isOpen, setIsOpen] = useControllableState({
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+    prop: open,
+  });
+  const chainOfThoughtContext = { isOpen, setIsOpen };
+  return (
+    <ChainOfThoughtContext.Provider value={chainOfThoughtContext}>
+      <div className={cn("not-prose w-full space-y-4", className)} {...props}>
+        {children}
+      </div>
+    </ChainOfThoughtContext.Provider>
+  );
+}
+export type ChainOfThoughtHeaderProps = ComponentProps<
+  typeof CollapsibleTrigger
+> & {
+  icon?: ReactNode;
+};
+export function ChainOfThoughtHeader({
+  className,
+  children,
+  icon,
+  ...props
+}: ChainOfThoughtHeaderProps) {
+  const { isOpen, setIsOpen } = useChainOfThought();
+  return (
+    <Collapsible onOpenChange={setIsOpen} open={isOpen}>
+      <CollapsibleTrigger
+        className={cn(
+          "flex w-full items-center gap-2 text-muted text-sm transition-[color,transform] duration-150 ease-out active:scale-[0.99] hover:text-foreground",
+          className,
+        )}
+        {...props}
+      >
+        {icon ?? <IconBrain className="size-4" />}
+        <span className="flex-1 text-left">
+          {children ?? "Chain of Thought"}
+        </span>
+        <IconChevronDown
+          className={cn(
+            "size-4 transition-transform duration-150 ease-out",
+            isOpen ? "rotate-180" : "rotate-0",
+          )}
+        />
+      </CollapsibleTrigger>
+    </Collapsible>
+  );
+}
+export type ChainOfThoughtStepProps = ComponentProps<"div"> & {
+  icon?: TablerIcon;
+  label: ReactNode;
+  description?: ReactNode;
+  status?: "complete" | "active" | "pending";
+};
+const stepStatusStyles = {
+  active: "text-foreground",
+  complete: "text-muted",
+  pending: "text-muted/50",
+};
+export function ChainOfThoughtStep({
+  className,
+  icon: Icon = IconPointFilled,
+  label,
+  description,
+  status = "complete",
+  children,
+  ...props
+}: ChainOfThoughtStepProps) {
+  return (
+    <div
+      className={cn(
+        "flex gap-2 text-sm",
+        stepStatusStyles[status],
+        "fade-in-0 slide-in-from-top-2 animate-in duration-200 ease-[cubic-bezier(0.32,0.72,0,1)]",
+        className,
+      )}
+      {...props}
+    >
+      <div className="relative mt-0.5">
+        <Icon className="size-4" />
+        <div className="absolute top-7 bottom-0 left-1/2 -mx-px w-px bg-separator" />
+      </div>
+      <div className="flex-1 space-y-2 overflow-hidden">
+        <div>{label}</div>
+        {description && <div className="text-muted text-xs">{description}</div>}
+        {children}
+      </div>
+    </div>
+  );
+}
+export type ChainOfThoughtSearchResultsProps = ComponentProps<"div">;
+export function ChainOfThoughtSearchResults({
+  className,
+  ...props
+}: ChainOfThoughtSearchResultsProps) {
+  return (
+    <div
+      className={cn("flex flex-wrap items-center gap-2", className)}
+      {...props}
+    />
+  );
+}
+export type ChainOfThoughtSearchResultProps = ComponentProps<typeof Badge>;
+export function ChainOfThoughtSearchResult({
+  className,
+  children,
+  ...props
+}: ChainOfThoughtSearchResultProps) {
+  return (
+    <Badge
+      className={cn("gap-1 px-2 py-0.5 font-normal text-xs", className)}
+      variant="secondary"
+      {...props}
+    >
+      {children}
+    </Badge>
+  );
+}
+export type ChainOfThoughtContentProps = ComponentProps<
+  typeof CollapsibleContent
+>;
+export function ChainOfThoughtContent({
+  className,
+  children,
+  ...props
+}: ChainOfThoughtContentProps) {
+  const { isOpen } = useChainOfThought();
+  return (
+    <Collapsible open={isOpen}>
+      <CollapsibleContent
+        className={cn(
+          "mt-2 space-y-3 text-foreground outline-hidden",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+export type ChainOfThoughtImageProps = ComponentProps<"div"> & {
+  caption?: string;
+};
+export function ChainOfThoughtImage({
+  className,
+  children,
+  caption,
+  ...props
+}: ChainOfThoughtImageProps) {
+  return (
+    <div className={cn("mt-2 space-y-2", className)} {...props}>
+      <div
+        className={cn(
+          flatPanelSubtleClass,
+          "relative flex max-h-88 items-center justify-center overflow-hidden rounded-lg p-3",
+        )}
+      >
+        {children}
+      </div>
+      {caption && <p className="text-muted text-xs">{caption}</p>}
+    </div>
+  );
+}
