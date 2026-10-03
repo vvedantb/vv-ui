@@ -1,4 +1,4 @@
-# vmem-ui
+# vv-ui
 
 Shared UI for vmem, vibot and Verve web. It holds one set of design tokens and a few shell components, so product UI stays consistent across apps.
 
@@ -21,7 +21,14 @@ Add the packages by path or git, not from npm.
 }
 ```
 
-For git installs, point pnpm at this repository and the package subdirectory, for example `"@vv/shell": "git+<repo-url>#main&path:/packages/shell"`. The `dist` folder is not committed, so build the shell package first (see below) or install from a local checkout.
+The private GitHub repo is [vvedantb/vv-ui](https://github.com/vvedantb/vv-ui). In an app `package.json`:
+
+```json
+"@vv/tokens": "github:vvedantb/vv-ui#main&path:packages/tokens",
+"@vv/shell": "github:vvedantb/vv-ui#main&path:packages/shell"
+```
+
+`@vv/tokens` is source CSS and needs no build. `@vv/shell`'s `dist` folder is not committed, so build that package after install (`pnpm build` in this repo) before Tailwind scans it.
 
 ## Use in a Tailwind v4 app
 
