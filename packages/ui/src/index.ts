@@ -1,4 +1,4 @@
-// Colour, radius, shadow and font tokens live in @vv/tokens. Import that
+// Colour, radius, shadow and font tokens live in @vvedantb/tokens. Import that
 // stylesheet in the app. This package does not ship a second token set.
 export { cn } from "./utils/cn";
 export { floatingSurfaceClass } from "./ui/_menu-classes";

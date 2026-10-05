@@ -1,16 +1,26 @@
 {
-  "name": "@vv/tokens",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@vvedantb/tokens",
+  "version": "0.1.0",
   "license": "MIT",
+  "description": "Shared CSS design tokens for Tailwind v4 apps.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vvedantb/vv-ui.git",
+    "directory": "packages/tokens"
+  },
   "exports": {
     ".": "./src/tokens.css",
     "./tokens.css": "./src/tokens.css"
   },
   "files": [
-    "src"
+    "src",
+    "LICENSE"
   ],
   "scripts": {
-    "build": "node -e \"require('node:fs').accessSync('src/tokens.css')\""
+    "build": "node -e \"require('node:fs').accessSync('src/tokens.css')\"",
+    "prepack": "node -e \"require('node:fs').accessSync('src/tokens.css')\""
   }
 }

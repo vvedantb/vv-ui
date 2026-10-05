@@ -1,10 +1,10 @@
 /*
- * @vv/tokens — shared design tokens for vmem, vibot and Verve web.
+ * @vvedantb/tokens — shared design tokens for vmem, vibot and Verve web.
  *
  * Import after Tailwind v4 in the app stylesheet:
  *
  *   @import "tailwindcss";
- *   @import "@vv/tokens";
+ *   @import "@vvedantb/tokens";
  *
  * This file does not import tailwindcss, plugins, marketing fonts or
  * app navigation variables. Those stay in each app.

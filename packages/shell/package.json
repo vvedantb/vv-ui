@@ -1,9 +1,17 @@
 {
-  "name": "@vv/shell",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@vvedantb/shell",
+  "version": "0.1.0",
   "license": "MIT",
+  "description": "Router-free React 19 shell pieces: SidebarHeader and PillTabs.",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vvedantb/vv-ui.git",
+    "directory": "packages/shell"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,11 +20,13 @@
   },
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE"
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "prepack": "tsc -p tsconfig.json"
   },
   "peerDependencies": {
     "react": ">=19",
