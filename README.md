@@ -1,39 +1,34 @@
 # vv-ui
 
-Shared UI for vmem, vibot and Verve web. One token file, one primitive library (vmem's `@vmem/ui`), and two shell pieces.
+Shared UI for vmem, vibot and Verve web. One token file, one primitive library, and two shell pieces.
 
 | Package | What it is |
 | --- | --- |
-| `@vv/tokens` | One CSS entry for Tailwind v4 apps: colour, radius, shadow, easing and font tokens, light and dark themes, and body defaults. |
-| `@vv/ui` | Shared React 19 primitives. vmem `packages/ui` is the baseline; leftover vibot and Verve files are included so the apps can share and unify them later. Source-exported. Colour, radius, shadow and font come from `@vv/tokens`, not a second token file. |
-| `@vv/shell` | React 19 components with no router dependency: `SidebarHeader` and `PillTabs`. Only copy; they are not also in `@vv/ui`. |
+| `@vvedantb/tokens` | One CSS entry for Tailwind v4 apps: colour, radius, shadow, easing and font tokens, light and dark themes, and body defaults. |
+| `@vvedantb/ui` | Shared React 19 primitives. vmem `packages/ui` is the baseline; leftover vibot and Verve files are included so the apps can share and unify them later. Source-exported. Colour, radius, shadow and font come from `@vvedantb/tokens`, not a second token file. |
+| `@vvedantb/shell` | React 19 components with no router dependency: `SidebarHeader` and `PillTabs`. Only copy; they are not also in `@vvedantb/ui`. |
 
-All three packages are private. Do not publish them to npm.
+All three packages are public npm packages under the `vvedantb` scope.
 
 ## Install
 
-Add the packages by path or git, not from npm.
+```sh
+npm install @vvedantb/ui @vvedantb/tokens @vvedantb/shell
+```
+
+For a local checkout of this repo:
 
 ```json
-// app package.json, path install (local checkout)
 "dependencies": {
-  "@vv/tokens": "link:../vv-ui/packages/tokens",
-  "@vv/ui": "link:../vv-ui/packages/ui",
-  "@vv/shell": "link:../vv-ui/packages/shell"
+  "@vvedantb/tokens": "link:../vv-ui/packages/tokens",
+  "@vvedantb/ui": "link:../vv-ui/packages/ui",
+  "@vvedantb/shell": "link:../vv-ui/packages/shell"
 }
 ```
 
-The private GitHub repo is [vvedantb/vv-ui](https://github.com/vvedantb/vv-ui). In an app `package.json`:
+`@vvedantb/tokens` and `@vvedantb/ui` ship source and need no compile step. `@vvedantb/shell` publishes compiled `dist` (built on pack). After a path/git install of this repo, run `pnpm build` so Tailwind can scan the compiled shell.
 
-```json
-"@vv/tokens": "github:vvedantb/vv-ui#main&path:packages/tokens",
-"@vv/ui": "github:vvedantb/vv-ui#main&path:packages/ui",
-"@vv/shell": "github:vvedantb/vv-ui#main&path:packages/shell"
-```
-
-`@vv/tokens` and `@vv/ui` are source and need no compile step. `@vv/shell`'s `dist` folder is not committed, so build that package after install (`pnpm build` in this repo) before Tailwind scans it.
-
-`@vv/ui` expects the vmem peer stack (React 19, Radix, CVA, cmdk, motion, sonner, clsx, tailwind-merge, Tabler icons) plus the leftover extras' peers (`radix-ui`, accordion/scroll-area/visually-hidden, vaul, embla, shiki, `ai`, streamdown, nanoid, use-stick-to-bottom). Install those in the app. Also install `@vv/tokens` and import it; `@vv/ui` does not copy tokens.
+`@vvedantb/ui` expects the vmem peer stack (React 19, Radix, CVA, cmdk, motion, sonner, clsx, tailwind-merge, Tabler icons) plus the leftover extras' peers (`radix-ui`, accordion/scroll-area/visually-hidden, vaul, embla, shiki, `ai`, streamdown, nanoid, use-stick-to-bottom). Install those in the app. Also install `@vvedantb/tokens` and import it; `@vvedantb/ui` does not copy tokens.
 
 ## Use in a Tailwind v4 app
 
@@ -41,12 +36,12 @@ In the app's main stylesheet:
 
 ```css
 @import "tailwindcss";
-@import "@vv/tokens";
-@source "../node_modules/@vv/ui/src/**/*.{ts,tsx}";
-@source "../node_modules/@vv/shell/dist/**/*.js";
+@import "@vvedantb/tokens";
+@source "../node_modules/@vvedantb/ui/src/**/*.{ts,tsx}";
+@source "../node_modules/@vvedantb/shell/dist/**/*.js";
 ```
 
-- `@vv/tokens` does not import Tailwind itself, so import Tailwind first.
+- `@vvedantb/tokens` does not import Tailwind itself, so import Tailwind first.
 - Tailwind does not scan `node_modules`. The `@source` lines tell it to read the UI source and the compiled shell, so their classes are generated. Paths are relative to the stylesheet. Change them to match the app's layout.
 - Dark mode uses the `.dark` class (the next-themes class strategy). `[data-theme="dark"]` also works.
 
@@ -63,14 +58,14 @@ Instrument Serif, Michroma and Inter are marketing fonts. They stay in each app 
 ### Components
 
 ```tsx
-import { Button, Dialog, Input } from "@vv/ui";
-import { SidebarHeader, PillTabs } from "@vv/shell";
+import { Button, Dialog, Input } from "@vvedantb/ui";
+import { SidebarHeader, PillTabs } from "@vvedantb/shell";
 ```
 
 - `SidebarHeader`: 44px (`h-11`) header row with a truncated title and an optional `trailing` slot. It has no close button, icons or navigation.
 - `PillTabs`: controlled pill tabs, icon and label only. It has no counts or badges. Use it only where you want pill tabs. It does not replace each app's segmented controls. Arrow keys, Home and End move between tabs.
 
-## What moved into `@vv/ui`
+## What moved into `@vvedantb/ui`
 
 **vmem baseline (plain names, not blended):** `_menu-classes`, `badge`, `breadcrumb`, `button`, `card`, `checkbox`, `collapsible`, `command`, `context-menu`, `dialog`, `dropdown-menu`, `hover-card`, `input`, `label`, `labeled-switch-row`, `modalTransition`, `popover`, `progress`, `select`, `separator`, `skeleton`, `sonner`, `sonner.css`, `spinner`, `switch`, `table`, `tabs`, `tabsSliding`, `textarea`, `time-picker`, `tooltip`, plus `cn` and motion presets.
 
@@ -98,4 +93,4 @@ pnpm install
 pnpm build
 ```
 
-`pnpm build` typechecks `@vv/ui` (source export, no `dist`), compiles `@vv/shell` to `packages/shell/dist`, and checks that the token CSS file exists.
+`pnpm build` typechecks `@vvedantb/ui` (source export, no `dist`), compiles `@vvedantb/shell` to `packages/shell/dist`, and checks that the token CSS file exists.

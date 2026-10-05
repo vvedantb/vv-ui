@@ -1,22 +1,39 @@
 {
-  "name": "@vv/ui",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@vvedantb/ui",
+  "version": "0.1.0",
   "license": "MIT",
+  "description": "Shared React 19 UI primitives for vmem, vibot and Verve.",
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./cn": "./src/utils/cn.ts"
+  "publishConfig": {
+    "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vvedantb/vv-ui.git",
+    "directory": "packages/ui"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./cn": {
+      "types": "./src/utils/cn.ts",
+      "default": "./src/utils/cn.ts"
+    }
+  },
+  "types": "./src/index.ts",
   "files": [
-    "src"
+    "src",
+    "LICENSE"
   ],
   "sideEffects": [
     "./src/ui/sonner.css"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json",
+    "prepack": "tsc -p tsconfig.json"
   },
   "peerDependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -43,7 +60,7 @@
     "@streamdown/math": "*",
     "@streamdown/mermaid": "*",
     "@tabler/icons-react": "^3.35.0",
-    "@vv/tokens": "*",
+    "@vvedantb/tokens": "*",
     "ai": ">=5.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -88,7 +105,7 @@
     "@tabler/icons-react": "^3.35.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "@vv/tokens": "workspace:*",
+    "@vvedantb/tokens": "workspace:*",
     "ai": "^5.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
