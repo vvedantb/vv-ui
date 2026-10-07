@@ -117,7 +117,7 @@ const InputGroupInput = React.forwardRef<
   <Input
     ref={ref}
     className={cn(
-      "h-full flex-1 border-0 bg-transparent px-3 py-2 shadow-none focus-visible:border-0 focus-visible:ring-0",
+      "h-full flex-1 rounded-none border-0 bg-transparent px-3 py-2 shadow-none focus-visible:border-0 focus-visible:ring-0",
       className,
     )}
     {...props}
@@ -132,7 +132,7 @@ const InputGroupTextarea = React.forwardRef<
   <Textarea
     ref={ref}
     className={cn(
-      "flex-1 resize-none border-0 bg-transparent px-3 py-2.5 shadow-none focus-visible:border-0 focus-visible:ring-0 field-sizing-content",
+      "flex-1 resize-none rounded-none border-0 bg-transparent px-3 py-2.5 shadow-none focus-visible:border-0 focus-visible:ring-0 field-sizing-content",
       className,
     )}
     {...props}
