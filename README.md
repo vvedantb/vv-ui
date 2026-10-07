@@ -45,6 +45,14 @@ In the app's main stylesheet:
 - Tailwind does not scan `node_modules`. The `@source` lines tell it to read the UI source and the compiled shell, so their classes are generated. Paths are relative to the stylesheet. Change them to match the app's layout.
 - Dark mode uses the `.dark` class (the next-themes class strategy). `[data-theme="dark"]` also works.
 
+### What the app must provide
+
+`@vvedantb/ui` uses some classes that neither Tailwind nor `@vvedantb/tokens` defines. Without them the classes silently render nothing:
+
+- `@import "shadow-plugin";` for `smooth-shadow-ring-*`, the edge and shadow of dialogs, sheets, menus, popovers, tooltips and toasts.
+- `@plugin "tailwindcss-animate";` (or `tw-animate-css`) for `animate-in`/`fade-*`/`zoom-*`/`slide-in-*` on overlays. `animate-accordion-down`/`-up` also need `accordion-down`/`accordion-up` keyframes in the app.
+- App-local CSS: `.glass-panel-strong` (dialog and toast fill), `.t-modal` with `.is-open`/`.is-closing` (dialog centring and transition), `.t-tabs`, `.t-tab` and `.t-tabs-pill` (tab layout and active state), `.t-clear*` (ClearInput dissolve layers), and `hit-target`.
+
 ### Font
 
 The tokens set `font-sans` to Instrument Sans, with a `system-ui` fallback. To load it from Google Fonts, put this line *above* `@import "tailwindcss"`. CSS ignores `@import url(...)` when it comes after other rules, so the token file cannot include it.

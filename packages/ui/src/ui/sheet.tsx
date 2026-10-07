@@ -6,15 +6,23 @@ import { cn } from "../utils/cn";
 
 type SheetSide = "top" | "bottom" | "left" | "right";
 
+// vaul animates and drags from the Root's `direction`; SheetContent reads it
+// so `<Sheet direction="right">` places the panel on the right by default.
+const SheetDirectionContext = React.createContext<SheetSide>("bottom");
+
 function Sheet({
   shouldScaleBackground = false,
+  direction = "bottom",
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
   return (
-    <DrawerPrimitive.Root
-      shouldScaleBackground={shouldScaleBackground}
-      {...props}
-    />
+    <SheetDirectionContext.Provider value={direction}>
+      <DrawerPrimitive.Root
+        shouldScaleBackground={shouldScaleBackground}
+        direction={direction}
+        {...props}
+      />
+    </SheetDirectionContext.Provider>
   );
 }
 
@@ -51,27 +59,32 @@ const sheetSideClass: Record<SheetSide, string> = {
 const SheetContent = React.forwardRef<
   React.ComponentRef<typeof DrawerPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+    /** Defaults to the parent Sheet's `direction`. */
     side?: SheetSide;
   }
->(({ className, children, side = "bottom", ...props }, ref) => (
-  <SheetPortal>
-    <SheetOverlay />
-    <DrawerPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed z-50 bg-overlay/95 text-overlay-foreground smooth-shadow-ring-xl outline-hidden backdrop-blur-xl",
-        sheetSideClass[side],
-        className,
-      )}
-      {...props}
-    >
-      {side === "bottom" || side === "top" ? (
-        <SheetHandle className="mx-auto mt-3 mb-1 h-1 w-12 shrink-0 rounded-full bg-surface-tertiary" />
-      ) : null}
-      {children}
-    </DrawerPrimitive.Content>
-  </SheetPortal>
-));
+>(({ className, children, side: sideProp, ...props }, ref) => {
+  const direction = React.useContext(SheetDirectionContext);
+  const side = sideProp ?? direction;
+  return (
+    <SheetPortal>
+      <SheetOverlay />
+      <DrawerPrimitive.Content
+        ref={ref}
+        className={cn(
+          "fixed z-50 bg-overlay/95 text-overlay-foreground smooth-shadow-ring-xl outline-hidden backdrop-blur-xl",
+          sheetSideClass[side],
+          className,
+        )}
+        {...props}
+      >
+        {side === "bottom" || side === "top" ? (
+          <SheetHandle className="mx-auto mt-3 mb-1 h-1 w-12 shrink-0 rounded-full bg-surface-tertiary" />
+        ) : null}
+        {children}
+      </DrawerPrimitive.Content>
+    </SheetPortal>
+  );
+});
 SheetContent.displayName = "SheetContent";
 
 export {

@@ -250,8 +250,8 @@ export const SpeechInput = ({
         className={cn(
           "relative z-10 rounded-full transition-[background-color,transform] duration-200 ease-smooth active:duration-100 active:ease-out",
           isListening
-            ? "bg-destructive text-danger-foreground hover:bg-destructive/80 hover:text-danger-foreground"
-            : "bg-primary text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground",
+            ? "bg-danger text-danger-foreground hover:bg-danger/80 hover:text-danger-foreground"
+            : "bg-accent text-accent-foreground hover:bg-accent/80 hover:text-accent-foreground",
           className,
         )}
         disabled={isDisabled}

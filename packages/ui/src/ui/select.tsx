@@ -74,7 +74,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "relative z-50 max-h-96 w-36 overflow-hidden outline-none",
+        "relative z-50 max-h-96 min-w-32 overflow-hidden outline-none",
         floatingSurfaceClass,
         floatingSurfaceAnimateClass,
         position === "popper" &&
