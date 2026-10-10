@@ -4,9 +4,10 @@ Shared UI for vmem, vibot and Verve web. One token file, one primitive library, 
 
 | Package | What it is |
 | --- | --- |
-| `@vvedantb/tokens` | One CSS entry for Tailwind v4 apps: colour, radius, shadow, easing and font tokens, light and dark themes, and body defaults. |
-| `@vvedantb/ui` | Shared React 19 primitives. vmem `packages/ui` is the baseline; leftover vibot and Verve files are included so the apps can share and unify them later. Source-exported. Colour, radius, shadow and font come from `@vvedantb/tokens`, not a second token file. |
+| `@vvedantb/tokens` | CSS tokens for Tailwind v4 web, plus `@vvedantb/tokens/native` JS colours, radii and spacing for React Native. |
+| `@vvedantb/ui` | Shared React 19 primitives. vmem `packages/ui` is the baseline; leftover vibot and Verve files are included so the apps can share and unify them later. Source-exported. Colour, radius, shadow and font come from `@vvedantb/tokens`, not a second token file. Web only. |
 | `@vvedantb/shell` | React 19 components with no router dependency: `SidebarHeader` and `PillTabs`. Only copy; they are not also in `@vvedantb/ui`. |
+| `@vvedantb/native-ui` | React Native + Expo primitives (floating surfaces, forms, tab bar, settings chrome). Source-exported. Uses `@vvedantb/tokens/native`. |
 
 All three packages are public npm packages under the `vvedantb` scope.
 
@@ -14,6 +15,8 @@ All three packages are public npm packages under the `vvedantb` scope.
 
 ```sh
 npm install @vvedantb/ui @vvedantb/tokens @vvedantb/shell
+# Expo / React Native:
+npm install @vvedantb/native-ui @vvedantb/tokens
 ```
 
 For a local checkout of this repo:
@@ -101,4 +104,15 @@ pnpm install
 pnpm build
 ```
 
-`pnpm build` typechecks `@vvedantb/ui` (source export, no `dist`), compiles `@vvedantb/shell` to `packages/shell/dist`, and checks that the token CSS file exists.
+`pnpm build` typechecks `@vvedantb/ui` (source export, no `dist`), compiles `@vvedantb/shell` to `packages/shell/dist`, and checks that the token CSS and native-ui entry files exist.
+
+## Publish
+
+No CI workflow. Publish from a logged-in npm machine (`NPM_CONFIG_USERCONFIG` if the token lives in a non-default rc):
+
+```sh
+pnpm --filter @vvedantb/tokens exec npm publish --access public
+pnpm --filter @vvedantb/native-ui exec npm publish --access public
+```
+
+Version the package in its `package.json` first. `@vvedantb/tokens` `0.1.1` adds `@vvedantb/tokens/native` and must land before `@vvedantb/native-ui` `0.1.0`.

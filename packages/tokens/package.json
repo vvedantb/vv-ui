@@ -1,8 +1,8 @@
 {
   "name": "@vvedantb/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
-  "description": "Shared CSS design tokens for Tailwind v4 apps.",
+  "description": "Shared CSS and JS design tokens for web and React Native.",
   "publishConfig": {
     "access": "public"
   },
@@ -13,7 +13,8 @@
   },
   "exports": {
     ".": "./src/tokens.css",
-    "./tokens.css": "./src/tokens.css"
+    "./tokens.css": "./src/tokens.css",
+    "./native": "./src/native.ts"
   },
   "files": [
     "src",
