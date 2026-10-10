@@ -10,7 +10,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-accent text-accent-foreground hover:-translate-y-0.5 hover:opacity-90",
-        destructive: "bg-danger text-danger-foreground hover:bg-danger/90",
+        destructive:
+          "bg-[oklch(47.2%_0.195_25.7)] text-white hover:bg-[oklch(42.5%_0.185_25.7)]",
         outline:
           "border border-border bg-transparent text-foreground hover:bg-default",
         secondary: "bg-default text-default-foreground hover:bg-default/78",

@@ -1,3 +1,5 @@
+import { prefersReducedMotion } from "./overlay-a11y";
+
 const closeTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>();
 
 function readModalCloseMs(): number {
@@ -27,6 +29,10 @@ function openModalSurface(el: HTMLElement): void {
 function closeModalSurface(el: HTMLElement): void {
   clearCloseTimer(el);
   el.classList.remove("is-open");
+  if (prefersReducedMotion()) {
+    el.classList.remove("is-closing");
+    return;
+  }
   el.classList.add("is-closing");
   const closeMs = readModalCloseMs();
   const timer = setTimeout(() => {
@@ -40,6 +46,10 @@ function closeModalSurface(el: HTMLElement): void {
 function primeModalSurface(el: HTMLElement): void {
   clearCloseTimer(el);
   el.classList.remove("is-open", "is-closing");
+  if (prefersReducedMotion()) {
+    openModalSurface(el);
+    return;
+  }
   requestAnimationFrame(() => {
     openModalSurface(el);
   });

@@ -16,6 +16,8 @@ export * from "./ui/collapsible";
 export * from "./ui/command";
 export * from "./ui/context-menu";
 export * from "./ui/dialog";
+export * from "./ui/alert-dialog";
+export * from "./ui/confirm-dialog";
 export * from "./ui/dropdown-menu";
 export * from "./ui/hover-card";
 export * from "./ui/input";
