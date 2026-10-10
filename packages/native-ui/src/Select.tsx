@@ -1,0 +1,132 @@
+import * as React from "react";
+import {
+  NativeSelectScrollView,
+  Select as PrimitiveSelect,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./primitives/select";
+import { cn } from "./cn";
+import { useLargerText } from "./theme";
+
+interface SelectOption<TValue = string | number | null> {
+  label: string;
+  value: TValue;
+  color?: string;
+}
+
+interface SelectProps<TValue = string | number | null> {
+  value?: TValue;
+  onValueChange: (value: TValue) => void;
+  options: Array<SelectOption<TValue>>;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+  triggerClassName?: string;
+  contentClassName?: string;
+  testID?: string;
+}
+
+const NULL_SENTINEL = "__null__";
+
+function toPrimitiveValue<TValue>(
+  value: TValue | undefined,
+  options: Array<SelectOption<TValue>>,
+) {
+  if (value === undefined || value === "") {
+    return undefined;
+  }
+
+  const expectedValue = value === null ? NULL_SENTINEL : String(value);
+  const option = options.find(
+    (item) => String(item.value ?? NULL_SENTINEL) === expectedValue,
+  );
+
+  if (!option) return undefined;
+
+  return {
+    label: option.label,
+    value: String(option.value ?? NULL_SENTINEL),
+  };
+}
+
+function Select<TValue = string | number | null>({
+  value,
+  onValueChange,
+  options,
+  placeholder,
+  disabled,
+  className,
+  triggerClassName,
+  contentClassName,
+  testID,
+}: SelectProps<TValue>) {
+  const largerText = useLargerText();
+  const primitiveValue = toPrimitiveValue(value, options);
+
+  return (
+    <PrimitiveSelect
+      value={primitiveValue}
+      onValueChange={(nextOption) => {
+        if (!nextOption) {
+          return;
+        }
+
+        const selectedValue =
+          nextOption.value === NULL_SENTINEL ? null : nextOption.value;
+        const match = options.find(
+          (option) =>
+            String(option.value ?? NULL_SENTINEL) === String(selectedValue),
+        );
+
+        if (match) {
+          onValueChange(match.value);
+        }
+      }}
+      disabled={disabled}
+    >
+      <SelectTrigger
+        testID={testID}
+        className={cn(
+          "h-14 w-full rounded-lg border-0 bg-secondary px-4 py-0 shadow-none",
+          largerText && "h-16",
+          triggerClassName,
+          className,
+        )}
+      >
+        <SelectValue
+          placeholder={placeholder ?? "Select option"}
+          className={cn(
+            "font-instrument-sans-medium text-foreground",
+            largerText ? "text-xl" : "text-lg",
+          )}
+        />
+      </SelectTrigger>
+      <SelectContent className={cn("w-full", contentClassName)}>
+        <NativeSelectScrollView>
+          <SelectGroup>
+            {options.map((option) => {
+              const optionId = testID
+                ? `${testID}-${String(option.value ?? "null")}`
+                : undefined;
+              return (
+                <SelectItem
+                  key={`${String(option.value)}-${option.label}`}
+                  testID={optionId}
+                  accessibilityLabel={option.label}
+                  label={option.label}
+                  value={String(option.value ?? NULL_SENTINEL)}
+                />
+              );
+            })}
+          </SelectGroup>
+        </NativeSelectScrollView>
+      </SelectContent>
+    </PrimitiveSelect>
+  );
+}
+
+export { Select };
+export type { SelectOption, SelectProps };
