@@ -1,4 +1,4 @@
-# vv-ui
+# ui
 
 Shared UI for vmem, vibot and Verve web. One token file, one primitive library, and two shell pieces.
 
@@ -20,9 +20,9 @@ For a local checkout of this repo:
 
 ```json
 "dependencies": {
-  "@vvedantb/tokens": "link:../vv-ui/packages/tokens",
-  "@vvedantb/ui": "link:../vv-ui/packages/ui",
-  "@vvedantb/shell": "link:../vv-ui/packages/shell"
+  "@vvedantb/tokens": "link:../ui/packages/tokens",
+  "@vvedantb/ui": "link:../ui/packages/ui",
+  "@vvedantb/shell": "link:../ui/packages/shell"
 }
 ```
 

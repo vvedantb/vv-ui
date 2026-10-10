@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vvedantb/vv-ui.git",
+    "url": "git+https://github.com/vvedantb/ui.git",
     "directory": "packages/ui"
   },
   "exports": {

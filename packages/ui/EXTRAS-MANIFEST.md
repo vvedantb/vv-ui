@@ -1,4 +1,4 @@
-# vv-ui-extras manifest
+# ui-extras manifest
 
 Sources were collected from shallow clones of `vvedantb/vibot` and `vvedantb/verve` on 2026-10-03 (BST). Generic primitives and `cn` helpers were intentionally omitted because they are already in vmem. The vibot package has no `exports` field; the included metadata note records that fact.
 
