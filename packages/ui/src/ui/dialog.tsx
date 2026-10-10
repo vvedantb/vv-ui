@@ -126,7 +126,7 @@ const DialogContent = React.forwardRef<
         <DialogOverlay />
         <DialogPrimitive.Content
           ref={mergedRef}
-          role={role}
+          {...(role ? { role } : {})}
           {...(missingDescription
             ? { "aria-describedby": generatedDescriptionId }
             : ariaDescribedBy != null
@@ -135,18 +135,18 @@ const DialogContent = React.forwardRef<
           onOpenAutoFocus={handleOpenAutoFocus}
           data-compact={compact ? "true" : undefined}
           className={cn(
-            "glass-panel-strong z-50 flex w-full flex-col gap-4 overflow-y-auto p-6 text-overlay-foreground smooth-shadow-ring-xl",
+            "glass-panel-strong z-50 flex w-full flex-col gap-4 p-6 text-overlay-foreground smooth-shadow-ring-xl",
             compact
               ? cn(
-                  "fixed inset-x-0 top-auto w-full max-w-none rounded-t-2xl rounded-b-none pt-3",
+                  "overflow-y-auto fixed inset-x-0 top-auto w-full max-w-none rounded-t-2xl rounded-b-none pt-3",
                   "max-h-[var(--overlay-vv-height,100dvh)]",
                   "bottom-[var(--overlay-vv-bottom,0px)]",
                   "pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]",
-                  "data-[compact=true]:[&_button]:min-h-11",
+                  "data-[compact=true]:[&_button]:min-h-11 data-[compact=true]:[&_[data-slot=dialog-footer]]:flex-col-reverse data-[compact=true]:[&_[data-slot=dialog-footer]]:sm:flex-col-reverse",
                   "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom",
                   "motion-reduce:animate-none motion-reduce:data-[state=open]:animate-none motion-reduce:data-[state=closed]:animate-none",
                 )
-              : "t-modal fixed left-1/2 top-1/2 max-h-[90dvh] max-w-lg max-sm:w-[calc(100vw-2rem)] rounded-lg",
+              : "t-modal fixed left-1/2 top-1/2 max-h-[90dvh] max-w-lg max-sm:w-[calc(100vw-2rem)] overflow-y-auto rounded-lg",
             className,
           )}
           {...props}
@@ -202,7 +202,10 @@ const DialogBody = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("min-h-0 flex-1 overscroll-contain", className)}
+    className={cn(
+      "min-h-11 flex-1 overflow-y-auto overscroll-contain",
+      className,
+    )}
     {...props}
   />
 );
@@ -213,8 +216,9 @@ const DialogFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
+    data-slot="dialog-footer"
     className={cn(
-      "sticky bottom-0 z-10 mt-auto flex flex-col-reverse gap-2 bg-overlay pt-2 sm:flex-row sm:justify-end",
+      "mt-auto flex flex-col-reverse gap-2 bg-overlay pt-2 sm:flex-row sm:justify-end",
       "pb-[max(0px,env(safe-area-inset-bottom,0px))]",
       "[&_button]:max-sm:min-h-11",
       className,

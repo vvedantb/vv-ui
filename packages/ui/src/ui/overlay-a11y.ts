@@ -56,6 +56,11 @@ export function connectOverlayViewport(el: HTMLElement): () => void {
     const bottom = Math.max(0, window.innerHeight - height - offsetTop);
     el.style.setProperty("--overlay-vv-height", `${height}px`);
     el.style.setProperty("--overlay-vv-bottom", `${bottom}px`);
+    if (el.getAttribute("data-compact") === "true") {
+      el.style.height = `${Math.min(el.scrollHeight, height)}px`;
+    } else {
+      el.style.removeProperty("height");
+    }
   };
 
   apply();
@@ -85,12 +90,15 @@ function isEditable(el: EventTarget | null): el is HTMLElement {
 
 export function connectKeyboardScroll(root: HTMLElement): () => void {
   const scrollFocused = () => {
-    const target = document.activeElement;
-    if (!isEditable(target) || !root.contains(target)) return;
-    target.scrollIntoView({
-      block: "center",
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-    });
+    const run = () => {
+      const target = document.activeElement;
+      if (!isEditable(target) || !root.contains(target)) return;
+      target.scrollIntoView({
+        block: "center",
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+      });
+    };
+    requestAnimationFrame(() => requestAnimationFrame(run));
   };
 
   const onFocusIn = (event: FocusEvent) => {
