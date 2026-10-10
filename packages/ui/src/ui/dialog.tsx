@@ -142,6 +142,7 @@ const DialogContent = React.forwardRef<
                   "max-h-[var(--overlay-vv-height,100dvh)]",
                   "bottom-[var(--overlay-vv-bottom,0px)]",
                   "pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]",
+                  "data-[compact=true]:[&_button]:min-h-11",
                   "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom",
                   "motion-reduce:animate-none motion-reduce:data-[state=open]:animate-none motion-reduce:data-[state=closed]:animate-none",
                 )
@@ -201,7 +202,7 @@ const DialogBody = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain", className)}
+    className={cn("min-h-0 flex-1 overscroll-contain", className)}
     {...props}
   />
 );

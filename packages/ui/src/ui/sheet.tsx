@@ -60,7 +60,7 @@ SheetOverlay.displayName = "SheetOverlay";
 
 const sheetSideClass: Record<SheetSide, string> = {
   bottom:
-    "inset-x-0 bottom-[var(--overlay-vv-bottom,0px)] mt-24 flex max-h-[var(--overlay-vv-height,100dvh)] h-auto flex-col rounded-t-2xl pb-[max(0.75rem,env(safe-area-inset-bottom,0px))]",
+    "inset-x-0 bottom-[var(--overlay-vv-bottom,0px)] mt-24 flex max-h-[min(96dvh,calc(var(--overlay-vv-height,100dvh)-1.5rem))] h-auto flex-col rounded-t-2xl pb-[max(0.75rem,env(safe-area-inset-bottom,0px))]",
   top: "inset-x-0 top-0 mb-24 flex h-auto max-h-[var(--overlay-vv-height,100dvh)] flex-col rounded-b-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))]",
   left: "inset-y-2 left-2 right-auto flex h-auto w-80 max-w-[88vw] flex-col rounded-2xl",
   right:

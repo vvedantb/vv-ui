@@ -100,9 +100,11 @@ export function connectKeyboardScroll(root: HTMLElement): () => void {
 
   root.addEventListener("focusin", onFocusIn);
   window.visualViewport?.addEventListener("resize", scrollFocused);
+  window.addEventListener("resize", scrollFocused);
   return () => {
     root.removeEventListener("focusin", onFocusIn);
     window.visualViewport?.removeEventListener("resize", scrollFocused);
+    window.removeEventListener("resize", scrollFocused);
   };
 }
 
